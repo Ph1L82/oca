@@ -4,6 +4,7 @@ namespace oca\Http\Controllers;
 
 use oca\Accounts;
 use Illuminate\Http\Request;
+use Response;
 
 class AccountsController extends Controller
 {
@@ -15,7 +16,11 @@ class AccountsController extends Controller
     public function index()
     {
         //
-        return Accounts::all();
+        $accounts = Accounts::all();
+
+        return Response::json([
+            'data' =>   $accounts->toArray(),
+            ],200);
     }
 
     /**
@@ -48,6 +53,18 @@ class AccountsController extends Controller
     public function show(Accounts $accounts)
     {
         //
+        if (!$accounts->id) {
+            # code...
+            return Response::json([
+                'error' =>  [
+                    'message' => 'No se encontró la cuenta'
+                    ]
+                ], 404);
+        }
+
+        return Response::json([
+                'data' => $accounts->toArray(),
+            ],200);
     }
 
     /**
