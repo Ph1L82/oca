@@ -4,10 +4,11 @@ namespace oca\Http\Controllers;
 
 use oca\Accounts;
 use Illuminate\Http\Request;
-use Response;
+use oca\Http\Controllers\ApiController;
 
 class AccountsController extends Controller
 {
+    use ApiController;
     /**
      * Display a listing of the resource.
      *
@@ -18,9 +19,12 @@ class AccountsController extends Controller
         //
         $accounts = Accounts::all();
 
-        return Response::json([
-            'data' =>   $accounts->toArray(),
-            ],200);
+        if (!$accounts) {
+            # code...
+            return $this->respondNotFound('Oops! no hay cuentas');
+        }
+
+        return $this->respond($accounts);
     }
 
     /**

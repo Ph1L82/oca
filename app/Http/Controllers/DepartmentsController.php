@@ -4,9 +4,11 @@ namespace oca\Http\Controllers;
 
 use oca\Departments;
 use Illuminate\Http\Request;
+use oca\Http\Controllers\ApiController;
 
 class DepartmentsController extends Controller
 {
+    use ApiController;
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +16,14 @@ class DepartmentsController extends Controller
      */
     public function index()
     {
-        Departments::all();
+        $departments = Departments::all();
+
+        if (!$departments) {
+            # code...
+            return $this->respondNotFound('Oops! no hay departamentos');
+        }
+
+        return $this->respond($departments);
     }
 
     /**

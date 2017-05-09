@@ -17,6 +17,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+/**
+ * Simple Api Login
+ */
+Route::post('login', 'ApiLoginController@login');
+
 Route::group(['middleware' => ['auth:api']], function()
 {
     // API routes here
@@ -30,4 +36,5 @@ Route::group(['middleware' => ['auth:api']], function()
 	Route::resource('accountbudget', 'AccountBudgetController');
 	Route::resource('budgets', 'BudgetsController');
 	Route::resource('accounts', 'AccountsController');
+	Route::post('logout', 'ApiLoginController@logout');
 });
