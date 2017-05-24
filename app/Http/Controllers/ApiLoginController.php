@@ -38,9 +38,8 @@ class ApiLoginController extends Controller
     public function logout(Request $logoutRequest)
     {
         # code...
-        $email = $logoutRequest->input('email');
         $token = $logoutRequest->input('api_token');
-        $user = User::where('email', '=', $email)->first();
+        $user = User::where('api_token', '=', $token)->first();
         if ($user->api_token == $token) {
             # code...
             $user->api_token = null;
