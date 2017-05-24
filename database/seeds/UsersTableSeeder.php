@@ -20,7 +20,7 @@ class UsersTableSeeder extends Seeder {
 			'password' => \Hash::make('Ph1L4ns3lm0'),
 			'department_id' => 1,
 			'role' => 'admin',
-			'api_token' => password_hash('Ph1L' . 'eduardo.rodriguez.bahamonde@gmail.com', PASSWORD_BCRYPT)
+			'api_token' => null
 			));
 
 		\DB::table('users')->insert(array(
@@ -30,7 +30,7 @@ class UsersTableSeeder extends Seeder {
 			'password' => \Hash::make('Un0Saluder'),
 			'department_id' => 1,
 			'role' => 'firmante',
-			'api_token' => password_hash('Eduardo Javier Alejandro Rodríguez Bahamonde' . 'erodriguez@unosalud.com', PASSWORD_BCRYPT)
+			'api_token' => null
 			));
 
 		\DB::table('users')->insert(array(
@@ -40,7 +40,7 @@ class UsersTableSeeder extends Seeder {
 			'password' => \Hash::make('Un0Saludjp'),
 			'department_id' => 1,
 			'role' => 'usuario',
-			'api_token' => password_hash('Juan Pablo Fuentes Acevedo' . 'jpfuentes@unosalud.com', PASSWORD_BCRYPT)
+			'api_token' => null
 			));
 
 		\DB::table('users')->insert(array(
@@ -50,7 +50,7 @@ class UsersTableSeeder extends Seeder {
 			'password' => \Hash::make('Un0Saludif'),
 			'department_id' => 1,
 			'role' => 'usuario',
-			'api_token' => password_hash('Italo Fuentes Basualto' . 'ifuentes@unosalud.com', PASSWORD_BCRYPT)
+			'api_token' => null
 			));
 	}
 }

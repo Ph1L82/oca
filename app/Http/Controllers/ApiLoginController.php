@@ -17,15 +17,14 @@ class ApiLoginController extends Controller
         $password = $loginRequest->input('password');
         $user = User::where('email', '=', $email)->first();
 
-
-        //echo $user->password;
-        //dd(bcrypt($password));
         if ($user->email) {
             # code...
             if (\Hash::check($password, $user->password)){
                 # code...
-                $user->api_token = md5(uniqid(rand(), true));
-                $user->save();
+                if($user->api_token == null){
+                    $user->api_token = md5(uniqid(rand(), true));
+                    $user->save();
+                }
 
                 return $this->respond($user->api_token);
             }else{
