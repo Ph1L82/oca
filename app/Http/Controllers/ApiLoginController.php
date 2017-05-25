@@ -46,7 +46,8 @@ class ApiLoginController extends Controller
             $user->api_token = null;
             $user->save();
 
-            return $this->respond('Sesión finalizada correctamente.');
+
+            return $this->respond(['message' => 'Sesión finalizada correctamente.', 'api_token' => null]);
         }
         /**
          * El orden de los factores altera el producto.
