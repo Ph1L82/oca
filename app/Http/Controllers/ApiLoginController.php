@@ -25,8 +25,9 @@ class ApiLoginController extends Controller
                     $user->api_token = md5(uniqid(rand(), true));
                     $user->save();
                 }
+                $api_token = ['api_token' => $user->api_token];
 
-                return $this->respond($user->api_token);
+                return $this->respond($api_token);
             }else{
                 return $this->respondUnauthorized('Contraseña incorrecta');
             }
