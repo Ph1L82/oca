@@ -2,7 +2,7 @@
 
 namespace oca\Http\Controllers;
 
-use oca\Accounts;
+use oca\Account;
 use Illuminate\Http\Request;
 use oca\Http\Controllers\ApiController;
 
@@ -17,14 +17,13 @@ class AccountsController extends Controller
     public function index()
     {
         //
-        $accounts = Accounts::all();
+        $accounts = Account::paginate(env('PAGINATE_SIZE'));
 
-        if (!$accounts) {
-            # code...
-            return $this->respondNotFound('Oops! no hay cuentas');
+        if($accounts->first()){
+            return $this->respond($accounts);
+        } else{
+            return $this->respondNotFound('Oops! no hay Ordenes de Compra');
         }
-
-        return $this->respond($accounts);
     }
 
     /**
@@ -54,7 +53,7 @@ class AccountsController extends Controller
      * @param  \oca\Accounts  $accounts
      * @return \Illuminate\Http\Response
      */
-    public function show(Accounts $accounts)
+    public function show(Account $accounts)
     {
         //
         if (!$accounts->id) {
@@ -77,7 +76,7 @@ class AccountsController extends Controller
      * @param  \oca\Accounts  $accounts
      * @return \Illuminate\Http\Response
      */
-    public function edit(Accounts $accounts)
+    public function edit(Account $accounts)
     {
         //
     }
@@ -89,7 +88,7 @@ class AccountsController extends Controller
      * @param  \oca\Accounts  $accounts
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Accounts $accounts)
+    public function update(Request $request, Account $accounts)
     {
         //
     }
@@ -100,7 +99,7 @@ class AccountsController extends Controller
      * @param  \oca\Accounts  $accounts
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Accounts $accounts)
+    public function destroy(Account $accounts)
     {
         //
     }

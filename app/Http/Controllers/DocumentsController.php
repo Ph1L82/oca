@@ -2,11 +2,13 @@
 
 namespace oca\Http\Controllers;
 
-use oca\Documents;
+use oca\Document;
 use Illuminate\Http\Request;
+use oca\Http\Controllers\ApiController;
 
 class DocumentsController extends Controller
 {
+    use ApiController;
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +16,13 @@ class DocumentsController extends Controller
      */
     public function index()
     {
-        Documents::all();
+        $documents = Document::paginate(env('PAGINATE_SIZE'));
+
+        if($documents->first()){
+            return $this->respond($documents);
+        } else{
+            return $this->respondNotFound('Oops! no hay Documentos');
+        }
     }
 
     /**
@@ -41,10 +49,10 @@ class DocumentsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \oca\Documents  $documents
+     * @param  \oca\Document  $document
      * @return \Illuminate\Http\Response
      */
-    public function show(Documents $documents)
+    public function show(Document $document)
     {
         //
     }
@@ -52,10 +60,10 @@ class DocumentsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \oca\Documents  $documents
+     * @param  \oca\Document  $document
      * @return \Illuminate\Http\Response
      */
-    public function edit(Documents $documents)
+    public function edit(Document $document)
     {
         //
     }
@@ -64,10 +72,10 @@ class DocumentsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \oca\Documents  $documents
+     * @param  \oca\Document  $document
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Documents $documents)
+    public function update(Request $request, Document $document)
     {
         //
     }
@@ -75,10 +83,10 @@ class DocumentsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \oca\Documents  $documents
+     * @param  \oca\Document  $document
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Documents $documents)
+    public function destroy(Document $document)
     {
         //
     }

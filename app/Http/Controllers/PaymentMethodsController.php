@@ -2,11 +2,13 @@
 
 namespace oca\Http\Controllers;
 
-use oca\Payment_Methods;
+use oca\Payment_Method;
 use Illuminate\Http\Request;
+use oca\Http\Controllers\ApiController;
 
 class PaymentMethodsController extends Controller
 {
+    use ApiController;
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +16,13 @@ class PaymentMethodsController extends Controller
      */
     public function index()
     {
-        return Payment_Methods::all();
+        $payment_methods = Payment_Method::paginate(env('PAGINATE_SIZE'));
+
+        if($payment_methods->first()){
+            return $this->respond($payment_methods);
+        } else{
+            return $this->respondNotFound('Oops! no hay Medios de Pago');
+        }
     }
 
     /**
@@ -41,10 +49,10 @@ class PaymentMethodsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \oca\Payment_Methods  $payment_Methods
+     * @param  \oca\Payment_Method  $payment_Method
      * @return \Illuminate\Http\Response
      */
-    public function show(Payment_Methods $payment_Methods)
+    public function show(Payment_Method $payment_Method)
     {
         //
     }
@@ -52,10 +60,10 @@ class PaymentMethodsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \oca\Payment_Methods  $payment_Methods
+     * @param  \oca\Payment_Method  $payment_Method
      * @return \Illuminate\Http\Response
      */
-    public function edit(Payment_Methods $payment_Methods)
+    public function edit(Payment_Method $payment_Method)
     {
         //
     }
@@ -64,10 +72,10 @@ class PaymentMethodsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \oca\Payment_Methods  $payment_Methods
+     * @param  \oca\Payment_Method  $payment_Method
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Payment_Methods $payment_Methods)
+    public function update(Request $request, Payment_Method $payment_Method)
     {
         //
     }
@@ -75,10 +83,10 @@ class PaymentMethodsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \oca\Payment_Methods  $payment_Methods
+     * @param  \oca\Payment_Method  $payment_Method
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Payment_Methods $payment_Methods)
+    public function destroy(Payment_Method $payment_Method)
     {
         //
     }

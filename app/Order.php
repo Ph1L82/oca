@@ -4,7 +4,7 @@ namespace oca;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Providers extends Model
+class Order extends Model
 {
     //
 }

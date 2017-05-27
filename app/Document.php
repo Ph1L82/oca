@@ -4,7 +4,7 @@ namespace oca;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Companies extends Model
+class Document extends Model
 {
     //
 }
