@@ -65,6 +65,7 @@ class OrdersController extends Controller
     public function show(Order $order)
     {
         //
+        return $this->respond($order->provider());
     }
 
     /**

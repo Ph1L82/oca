@@ -61,7 +61,11 @@ class ItemsController extends Controller
      */
     public function show(Item $item)
     {
-        //
+        if($item->id){
+            return $this->respond($item);
+        }else{
+            return $this->respondNotFound('Oops! no se encontró el item buscado.');
+        }
     }
 
     /**
