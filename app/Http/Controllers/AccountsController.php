@@ -17,11 +17,7 @@ class AccountsController extends Controller
     public function index()
     {
         //
-<<<<<<< HEAD
-        $accounts = Accounts::all()->paginate(25);
-=======
         $accounts = Account::paginate(env('PAGINATE_SIZE'));
->>>>>>> bb63a11346bff92197f62025e831b6809af5f2a5
 
         if($accounts->first()){
             return $this->respond($accounts);
