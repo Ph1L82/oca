@@ -17,7 +17,7 @@ class AccountsController extends Controller
     public function index()
     {
         //
-        $accounts = Accounts::all();
+        $accounts = Accounts::all()->paginate(25);
 
         if (!$accounts) {
             # code...
