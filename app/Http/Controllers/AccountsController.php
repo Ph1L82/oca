@@ -55,19 +55,11 @@ class AccountsController extends Controller
      */
     public function show(Account $accounts)
     {
-        //
-        if (!$accounts->id) {
-            # code...
-            return Response::json([
-                'error' =>  [
-                    'message' => 'No se encontró la cuenta'
-                    ]
-                ], 404);
+        if($accounts->id){
+            return $this->respond($accounts);
+        }else{
+            return $this->respondNotFound('Oops! no se encontró el la cuenta buscada.');
         }
-
-        return Response::json([
-                'data' => $accounts->toArray(),
-            ],200);
     }
 
     /**
