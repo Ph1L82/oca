@@ -14,6 +14,7 @@ class AddOrderFkToItemsTable extends Migration
     public function up()
     {
         Schema::table('items', function (Blueprint $table) {
+            $table->foreign('account_budget_id')->references('id')->on('account__budget');
             $table->foreign('order_id')->references('id')->on('orders');
         });
     }
@@ -26,6 +27,7 @@ class AddOrderFkToItemsTable extends Migration
     public function down()
     {
         Schema::table('items', function (Blueprint $table) {
+            $table->dropForeign('items_account_budget_id_foreign');
             $table->dropForeign('items_order_id_foreign');
         });
     }

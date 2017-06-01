@@ -2,11 +2,13 @@
 
 namespace oca\Http\Controllers;
 
-use oca\Companies;
+use oca\Company;
 use Illuminate\Http\Request;
+use oca\Http\Controllers\ApiController;
 
 class CompaniesController extends Controller
 {
+    use ApiController;
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +16,13 @@ class CompaniesController extends Controller
      */
     public function index()
     {
-        return Companies::all();
+        $companies = Company::paginate(env('PAGINATE_SIZE'));
+
+        if($companies->first()){
+            return $this->respond($companies);
+        } else{
+            return $this->respondNotFound('Oops! no hay Empresas');
+        }
     }
 
     /**
@@ -41,10 +49,10 @@ class CompaniesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \oca\Companies  $companies
+     * @param  \oca\Companies  $company
      * @return \Illuminate\Http\Response
      */
-    public function show(Companies $companies)
+    public function show(Company $company)
     {
         //
     }
@@ -52,10 +60,10 @@ class CompaniesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \oca\Companies  $companies
+     * @param  \oca\Companies  $company
      * @return \Illuminate\Http\Response
      */
-    public function edit(Companies $companies)
+    public function edit(Company $company)
     {
         //
     }
@@ -64,10 +72,10 @@ class CompaniesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \oca\Companies  $companies
+     * @param  \oca\Companies  $company
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Companies $companies)
+    public function update(Request $request, Company $company)
     {
         //
     }
@@ -75,10 +83,10 @@ class CompaniesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \oca\Companies  $companies
+     * @param  \oca\Companies  $company
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Companies $companies)
+    public function destroy(Company $company)
     {
         //
     }

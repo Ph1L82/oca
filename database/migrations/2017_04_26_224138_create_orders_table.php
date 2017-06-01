@@ -19,8 +19,10 @@ class CreateOrdersTable extends Migration
             $table->integer('payment_id')->unsigned();
             $table->string('description')->nullable();
             $table->integer('author')->unsigned();
-            $table->integer('approved_by')->unsigned()->nullable();
-            $table->timestamp('approved')->nullable();
+            $table->integer('approved_by')->unsigned()->nullable()->default(null);
+            $table->timestamp('approved')->nullable()->default(null);
+            $table->integer('disapproved_by')->unsigned()->nullable()->default(null);
+            $table->timestamp('disapproved')->nullable()->default(null);
             $table->timestamps();
             $table->softDeletes();
 

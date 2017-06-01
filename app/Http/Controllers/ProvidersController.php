@@ -2,11 +2,13 @@
 
 namespace oca\Http\Controllers;
 
-use oca\Providers;
+use oca\Provider;
 use Illuminate\Http\Request;
+use oca\Http\Controllers\ApiController;
 
 class ProvidersController extends Controller
 {
+    use ApiController;
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +16,13 @@ class ProvidersController extends Controller
      */
     public function index()
     {
-        //
+        $providers = Provider::paginate(env('PAGINATE_SIZE'));
+
+        if($providers->first()){
+            return $this->respond($providers);
+        } else{
+            return $this->respondNotFound('Oops! no hay Proveedores');
+        }
     }
 
     /**
@@ -35,16 +43,23 @@ class ProvidersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $provider = new Provider();
+        $provider->company_name = $request->input('company_name');
+        $provider->rut = $request->input('rut');
+        $provider->address = $request->input('address');
+        $provider->phone = $request->input('phone');
+        $provider->email = $request->input('email');
+        $provider->save();
+        return $this->respond($provider);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \oca\Providers  $providers
+     * @param  \oca\Provider  $provider
      * @return \Illuminate\Http\Response
      */
-    public function show(Providers $providers)
+    public function show(Provider $provider)
     {
         //
     }
@@ -52,10 +67,10 @@ class ProvidersController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \oca\Providers  $providers
+     * @param  \oca\Provider  $provider
      * @return \Illuminate\Http\Response
      */
-    public function edit(Providers $providers)
+    public function edit(Provider $provider)
     {
         //
     }
@@ -64,10 +79,10 @@ class ProvidersController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \oca\Providers  $providers
+     * @param  \oca\Provider  $provider
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Providers $providers)
+    public function update(Request $request, Provider $provider)
     {
         //
     }
@@ -75,10 +90,10 @@ class ProvidersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \oca\Providers  $providers
+     * @param  \oca\Provider  $provider
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Providers $providers)
+    public function destroy(Provider $provider)
     {
         //
     }

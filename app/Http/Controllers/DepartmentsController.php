@@ -2,7 +2,7 @@
 
 namespace oca\Http\Controllers;
 
-use oca\Departments;
+use oca\Department;
 use Illuminate\Http\Request;
 use oca\Http\Controllers\ApiController;
 
@@ -16,14 +16,16 @@ class DepartmentsController extends Controller
      */
     public function index()
     {
-        $departments = Departments::all();
+        $departments = Department::paginate(env('PAGINATE_SIZE'));
 
-        if (!$departments) {
+        if ($departments->first()) {
             # code...
-            return $this->respondNotFound('Oops! no hay departamentos');
+            return $this->respond($departments);
         }
-
-        return $this->respond($departments);
+        else{
+            # code...
+            return $this->respondNotFound('Oops! no hay Departamentos');
+        }
     }
 
     /**
@@ -53,7 +55,7 @@ class DepartmentsController extends Controller
      * @param  \oca\Departments  $departments
      * @return \Illuminate\Http\Response
      */
-    public function show(Departments $departments)
+    public function show(Department $department)
     {
         //
     }
@@ -61,10 +63,10 @@ class DepartmentsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \oca\Departments  $departments
+     * @param  \oca\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function edit(Departments $departments)
+    public function edit(Department $department)
     {
         //
     }
@@ -73,10 +75,10 @@ class DepartmentsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \oca\Departments  $departments
+     * @param  \oca\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Departments $departments)
+    public function update(Request $request, Department $department)
     {
         //
     }
@@ -84,10 +86,10 @@ class DepartmentsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \oca\Departments  $departments
+     * @param  \oca\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Departments $departments)
+    public function destroy(Department $department)
     {
         //
     }

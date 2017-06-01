@@ -2,11 +2,14 @@
 
 namespace oca\Http\Controllers;
 
-use oca\Budgets;
+use oca\Budget;
 use Illuminate\Http\Request;
+use oca\Http\Controllers\ApiController;
 
 class BudgetsController extends Controller
 {
+
+    use ApiController;
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +17,16 @@ class BudgetsController extends Controller
      */
     public function index()
     {
-        return Budgets::all();
+        $budgets = Budget::paginate(env('PAGINATE_SIZE'));
+
+        if ($budgets->first()) {
+            # code...
+            return $this->respond($budgets);
+        }
+        else{
+            # code...
+            return $this->respondNotFound('Oops! no hay Presupuestos');
+        }
     }
 
     /**
@@ -44,7 +56,7 @@ class BudgetsController extends Controller
      * @param  \oca\Budgets  $budgets
      * @return \Illuminate\Http\Response
      */
-    public function show(Budgets $budgets)
+    public function show(Budget $budgets)
     {
         //
     }
@@ -55,7 +67,7 @@ class BudgetsController extends Controller
      * @param  \oca\Budgets  $budgets
      * @return \Illuminate\Http\Response
      */
-    public function edit(Budgets $budgets)
+    public function edit(Budget $budgets)
     {
         //
     }
@@ -67,7 +79,7 @@ class BudgetsController extends Controller
      * @param  \oca\Budgets  $budgets
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Budgets $budgets)
+    public function update(Request $request, Budget $budgets)
     {
         //
     }
@@ -78,7 +90,7 @@ class BudgetsController extends Controller
      * @param  \oca\Budgets  $budgets
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Budgets $budgets)
+    public function destroy(Budget $budgets)
     {
         //
     }

@@ -4,9 +4,11 @@ namespace oca\Http\Controllers;
 
 use oca\Account_Budget;
 use Illuminate\Http\Request;
+use oca\Http\Controllers\ApiController;
 
 class AccountBudgetController extends Controller
 {
+    use ApiController;
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +16,13 @@ class AccountBudgetController extends Controller
      */
     public function index()
     {
-        //
+        $account_budget = Account_Budget::paginate(env('PAGINATE_SIZE'));
+
+        if($account_budget->first()){
+            return $this->respond($account_budget);
+        } else{
+            return $this->respondNotFound('Oops! no hay Cuentas de Presupuesto');
+        }
     }
 
     /**

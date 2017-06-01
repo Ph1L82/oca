@@ -2,11 +2,15 @@
 
 namespace oca\Http\Controllers;
 
-use oca\Orders;
+use oca\Order;
 use Illuminate\Http\Request;
+use oca\Http\Controllers\ApiController;
+use Auth;
 
 class OrdersController extends Controller
 {
+
+    use ApiController;
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +18,14 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        //
+        $orders = Order::paginate(env('PAGINATE_SIZE'));
+
+        if($orders->first()){
+            return $this->respond($orders);
+        } else{
+            return $this->respondNotFound('Oops! no hay Ordenes de Compra');
+        }
+
     }
 
     /**
@@ -35,27 +46,35 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $order = new Order();
+        $order->provider_id = $request->input('provider_id');
+        $order->payment_id = $request->input('payment_id');
+        $order->description = $request->input('description');
+        $order->author = Auth::User()->id;
+        $order->save();
+        return $this->respond($order);
+
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \oca\Orders  $orders
+     * @param  \oca\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function show(Orders $orders)
+    public function show(Order $order)
     {
         //
+        return $this->respond($order->provider());
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \oca\Orders  $orders
+     * @param  \oca\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function edit(Orders $orders)
+    public function edit(Order $order)
     {
         //
     }
@@ -64,10 +83,10 @@ class OrdersController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \oca\Orders  $orders
+     * @param  \oca\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Orders $orders)
+    public function update(Request $request, Order $order)
     {
         //
     }
@@ -75,10 +94,10 @@ class OrdersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \oca\Orders  $orders
+     * @param  \oca\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Orders $orders)
+    public function destroy(Order $order)
     {
         //
     }
