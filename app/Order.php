@@ -18,6 +18,12 @@ class Order extends Model
     public function provider()
     {
     	# code...
-    	return $this->hasOne('oca\Provider');
+    	return $this->hasOne('oca\Provider', 'id');
+    }
+
+    public function author()
+    {
+    	# code...
+    	return $this->belongsTo('oca\User', 'author');
     }
 }

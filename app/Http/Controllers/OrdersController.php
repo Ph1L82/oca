@@ -3,6 +3,8 @@
 namespace oca\Http\Controllers;
 
 use oca\Order;
+use oca\Department;
+use oca\Company;
 use Illuminate\Http\Request;
 use oca\Http\Controllers\ApiController;
 use Auth;
@@ -19,6 +21,19 @@ class OrdersController extends Controller
     public function index()
     {
         $orders = Order::paginate(env('PAGINATE_SIZE'));
+
+        if($orders->first()){
+            return $this->respond($orders);
+        } else{
+            return $this->respondNotFound('Oops! no hay Ordenes de Compra');
+        }
+
+    }
+
+    public function byDay(Request $request)
+    {
+        $orders = Order::whereCreatedAt($request->input('day'))
+        ->paginate(env('PAGINATE_SIZE'));
 
         if($orders->first()){
             return $this->respond($orders);
@@ -65,7 +80,29 @@ class OrdersController extends Controller
     public function show(Order $order)
     {
         //
-        return $this->respond($order->provider());
+        $items = $order->items()->get();
+        $provider = $order->provider()->get();
+        $department = Department::find($order->author()->first()->department)->first();
+        $company = Company::find($department->company_id)->first();
+
+        $author = [ 'name' => $order->author()->first()->name,
+                    'email' => $order->author()->first()->email,
+                    'department' => $department->name,
+                    'company' => $company->company_name
+                ];
+        $result = [
+                    'orderId' => $order->id,
+                    'author' => $author,
+                    'created_at' => $order->created_at,
+                    'provider' => $provider,
+                    'description' => $order->description,
+                    'approved_by' => $order->approved_by,
+                    'approved' => $order->approved,
+                    'disapproved' => $order->disapproved,
+                    'disapproved_by' => $order->disapproved_by,
+                    'items' => $items,
+                ];
+        return $this->respond($result);
     }
 
     /**
