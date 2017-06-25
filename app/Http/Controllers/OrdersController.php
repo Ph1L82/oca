@@ -93,7 +93,7 @@ class OrdersController extends Controller
         $result = [
                     'orderId' => $order->id,
                     'author' => $author,
-                    'created_at' => $order->created_at,
+                    'created_at' => date_format($order->created_at, 'Y-m-d H:i:s'),
                     'provider' => $provider,
                     'description' => $order->description,
                     'approved_by' => $order->approved_by,
