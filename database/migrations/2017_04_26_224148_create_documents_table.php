@@ -21,6 +21,8 @@ class CreateDocumentsTable extends Migration
             $table->date('expiration')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('provider_id')->references('id')->on('providers');
         });
     }
 
