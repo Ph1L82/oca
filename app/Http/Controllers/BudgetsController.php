@@ -5,6 +5,7 @@ namespace oca\Http\Controllers;
 use oca\Budget;
 use Illuminate\Http\Request;
 use oca\Http\Controllers\ApiController;
+use Auth;
 
 class BudgetsController extends Controller
 {
@@ -17,7 +18,7 @@ class BudgetsController extends Controller
      */
     public function index()
     {
-        $budgets = Budget::paginate(env('PAGINATE_SIZE'));
+        $budgets = Budget::where('department_id', '=', Auth::User()->department_id)->accountsBudget;
 
         if ($budgets->first()) {
             # code...
