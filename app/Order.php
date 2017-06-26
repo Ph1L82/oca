@@ -23,7 +23,19 @@ class Order extends Model
 
     public function author()
     {
+        # code...
+        return $this->belongsTo('oca\User', 'author');
+    }
+
+    public function approved()
+    {
+        # code...
+        return $this->belongsTo('oca\User', 'approved_by');
+    }
+
+    public function disapproved()
+    {
     	# code...
-    	return $this->belongsTo('oca\User', 'author');
+    	return $this->belongsTo('oca\User', 'disapproved_by');
     }
 }

@@ -8,6 +8,7 @@ use oca\Company;
 use Illuminate\Http\Request;
 use oca\Http\Controllers\ApiController;
 use Auth;
+use Carbon;
 
 class OrdersController extends Controller
 {
@@ -20,7 +21,9 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        $orders = Order::paginate(env('PAGINATE_SIZE'));
+        $orders = Order::where('approved', '=', null)
+                    ->where('disapproved', '=', null)
+                    ->paginate(env('PAGINATE_SIZE'));
 
         if($orders->first()){
             return $this->respond($orders);
@@ -33,7 +36,9 @@ class OrdersController extends Controller
     public function byDay(Request $request)
     {
         $orders = Order::whereCreatedAt($request->input('day'))
-        ->paginate(env('PAGINATE_SIZE'));
+                    ->where('approved', '=', null)
+                    ->where('disapproved', '=', null)
+                    ->paginate(env('PAGINATE_SIZE'));
 
         if($orders->first()){
             return $this->respond($orders);
@@ -80,8 +85,8 @@ class OrdersController extends Controller
     public function show(Order $order)
     {
         //
-        $items = $order->items()->get();
-        $provider = $order->provider()->get();
+        //$items = $order->items()->get();
+        //$provider = $order->provider()->get();
         $department = Department::find($order->author()->first()->department)->first();
         $company = Company::find($department->company_id)->first();
 
@@ -94,13 +99,13 @@ class OrdersController extends Controller
                     'orderId' => $order->id,
                     'author' => $author,
                     'created_at' => date_format($order->created_at, 'Y-m-d H:i:s'),
-                    'provider' => $provider,
+                    'provider' => $order->provider,
                     'description' => $order->description,
                     'approved_by' => $order->approved_by,
                     'approved' => $order->approved,
                     'disapproved' => $order->disapproved,
                     'disapproved_by' => $order->disapproved_by,
-                    'items' => $items,
+                    'items' => $order->items,
                 ];
         return $this->respond($result);
     }
@@ -137,5 +142,38 @@ class OrdersController extends Controller
     public function destroy(Order $order)
     {
         //
+    }
+
+    public function approve(Order $order)
+    {
+        if (Auth::User()->role == 'firmante') {
+            # code...
+            $order->items;
+            foreach ($order->items as $item) {
+                # code...
+                $accountBudget = Account_Budget::find($item->account_budget_id);
+                $accountBudget->balance = $accountBudget->balance - ($item->cost * $item->quantity);
+                $accountBudget->save();
+            }
+            $order->approved = Carbon::now();
+            $order->approved_by = Auth::User()->id;
+            $order->save();
+            $this->show($order);
+        } else{
+            return $this->respondUnauthorized();
+        }
+    }
+
+    public function disapprove(Order $order)
+    {
+        if (Auth::User()->role == 'firmante') {
+            # code...
+            $order->disapproved = Carbon::now();
+            $order->disapproved_by = Auth::User()->id;
+            $order->save();
+            $this->show($order);
+        } else{
+            return $this->respondUnauthorized();
+        }
     }
 }

@@ -18,11 +18,21 @@ class BudgetsController extends Controller
      */
     public function index()
     {
-        $budgets = Budget::where('department_id', '=', Auth::User()->department_id)->accountsBudget;
+        $budget = Budget::where('department_id', '=', Auth::User()->department_id)->first();
+
+        $budgets = Budget::find($budget->id)->accountsBudget;
+
+        $budget = [
+                    'department_id' =>  Budget::find($budget->id)->department->id,
+                    'department'    =>  Budget::find($budget->id)->department->name,
+                    'begin'         =>  $budget->begins,
+                    'ends'          =>  $budget->ends,
+                    'accounts'      =>  $budgets
+        ];
 
         if ($budgets->first()) {
             # code...
-            return $this->respond($budgets);
+            return $this->respond($budget);
         }
         else{
             # code...
