@@ -85,9 +85,6 @@ class OrdersController extends Controller
      */
     public function show(Order $order)
     {
-        //
-        //$items = $order->items()->get();
-        //$provider = $order->provider()->get();
         $department = Department::find($order->author()->first()->department)->first();
         $company = Company::find($department->company_id)->first();
 
@@ -149,16 +146,16 @@ class OrdersController extends Controller
     {
         if (Auth::User()->role == 'firmante') {
             if (($order->approved == null) && ($order->disapproved == null)) {
-                foreach ($order->items as $item) {
+                foreach ($order->items as $i => $item) {
                     # code...
-                    $accountBudget = Account_Budget::find($item->account_budget_id);
-                    $accountBudget->balance = $accountBudget->balance - ($item->cost * $item->quantity);
+                    $accountBudget[$i] = Account_Budget::find($item->account_budget_id);
+                    $accountBudget[$i]->balance = $accountBudget->balance - ($item->cost * $item->quantity);
+                    $accountBudget[$i]->save();
                 }
-                $accountBudget->save();
                 $order->approved = Carbon::now();
                 $order->approved_by = Auth::User()->id;
                 $order->save();
-                $this->show($order);
+                return $this->respond($accountBudget);
             } else{
                 return $this->respondUnauthorized();
             }
