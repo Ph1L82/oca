@@ -176,19 +176,19 @@ class OrdersController extends Controller
                     'company' => $company->company_name
                 ];
 
-            foreach ($order->items as $i => $item) {
+            foreach ($order->items as $item) {
                 $subTotal = $subTotal + ($item->cost * $item->quantity);
             }
 
         $result = [
-                    'orderId' => $order->id,
+                    'order_id' => $order->id,
                     'author' => $author,
                     'created_at' => date_format($order->created_at, 'Y-m-d H:i:s'),
                     'provider' => $order->provider,
                     'description' => $order->description,
-                    'subTotal'  =>  $subTotal,
+                    'sub_total'  =>  $subTotal,
                     'iva'  =>  ($subTotal*env('IVA')),
-                    'subTotal'  =>  ($subTotal * (1+env('IVA'))),
+                    'total'  =>  ($subTotal * (1+env('IVA'))),
                     'approved_by' => $order->approved_by,
                     'approved' => $order->approved,
                     'disapproved' => $order->disapproved,
