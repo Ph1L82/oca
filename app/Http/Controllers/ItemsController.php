@@ -109,9 +109,14 @@ class ItemsController extends Controller
 
     public function checkOrder($order_id)
     {
-        $order = Order::find($order_id);
-        if ((is_null($order->approved)) && (is_null($order->disapproved))) {
-            return true;
+        if ($order = Order::find($order_id)){
+            if ((is_null($order->approved)) && (is_null($order->disapproved))) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return $this->respondBadRequest('Order : ' . $order_id . ' doesn\'t exists.');
         }
     }
 }
