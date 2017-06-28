@@ -109,7 +109,7 @@ class ItemsController extends Controller
 
     public function checkOrder($order_id)
     {
-        $order = Order::find($order_id);
+        $order = Order::find($order_id)->first();
         if (!is_null($order)){
             if ((is_null($order->approved)) && (is_null($order->disapproved))) {
                 return true;
