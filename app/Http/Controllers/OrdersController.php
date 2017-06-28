@@ -5,6 +5,7 @@ namespace oca\Http\Controllers;
 use oca\Order;
 use oca\Department;
 use oca\Company;
+use oca\Account_Budget;
 use Illuminate\Http\Request;
 use oca\Http\Controllers\ApiController;
 use Auth;
