@@ -30,6 +30,8 @@ Route::group(['middleware' => ['auth:api']], function()
 	Route::resource('companies', 'CompaniesController');
 	Route::resource('documents', 'DocumentsController');
 	Route::resource('items', 'ItemsController');
+	Route::get('orders/{order}/approve', 'OrdersController@approve');
+	Route::get('orders/{order}/disapprove', 'OrdersController@disapprove');
 	Route::resource('orders', 'OrdersController');
 	Route::resource('paymentmethods', 'PaymentMethodsController');
 	Route::resource('providers', 'ProvidersController');
