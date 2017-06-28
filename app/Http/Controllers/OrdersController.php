@@ -147,7 +147,7 @@ class OrdersController extends Controller
 
     public function approve(Order $order)
     {
-        if ((Auth::User()->role == 'firmante') && ($order->approved == null)) {
+        if ((Auth::User()->role == 'firmante') && ($order->approved == null || $order->disapproved == null)) {
             # code...
             foreach ($order->items as $item) {
                 # code...
@@ -166,7 +166,7 @@ class OrdersController extends Controller
 
     public function disapprove(Order $order)
     {
-        if (Auth::User()->role == 'firmante') {
+        if ((Auth::User()->role == 'firmante') && ($order->disapproved == null || $order->approved == null)){
             # code...
             $order->disapproved = Carbon::now();
             $order->disapproved_by = Auth::User()->id;
