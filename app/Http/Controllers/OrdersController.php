@@ -147,18 +147,21 @@ class OrdersController extends Controller
 
     public function approve(Order $order)
     {
-        if ((Auth::User()->role == 'firmante') && ($order->approved == null || $order->disapproved == null)) {
-            # code...
-            foreach ($order->items as $item) {
-                # code...
-                $accountBudget = Account_Budget::find($item->account_budget_id);
-                $accountBudget->balance = $accountBudget->balance - ($item->cost * $item->quantity);
-                $accountBudget->save();
+        if (Auth::User()->role == 'firmante') {
+            if (($order->approved == null) || ($order->disapproved == null)) {
+                foreach ($order->items as $item) {
+                    # code...
+                    $accountBudget = Account_Budget::find($item->account_budget_id);
+                    $accountBudget->balance = $accountBudget->balance - ($item->cost * $item->quantity);
+                    $accountBudget->save();
+                }
+                $order->approved = Carbon::now();
+                $order->approved_by = Auth::User()->id;
+                $order->save();
+                $this->show($order);
+            } else{
+                return $this->respondUnauthorized();
             }
-            $order->approved = Carbon::now();
-            $order->approved_by = Auth::User()->id;
-            $order->save();
-            $this->show($order);
         } else{
             return $this->respondUnauthorized();
         }
@@ -166,12 +169,15 @@ class OrdersController extends Controller
 
     public function disapprove(Order $order)
     {
-        if ((Auth::User()->role == 'firmante') && ($order->disapproved == null || $order->approved == null)){
-            # code...
-            $order->disapproved = Carbon::now();
-            $order->disapproved_by = Auth::User()->id;
-            $order->save();
-            $this->show($order);
+        if (Auth::User()->role == 'firmante'){
+            if (($order->approved == null) || ($order->disapproved == null)) {
+                $order->disapproved = Carbon::now();
+                $order->disapproved_by = Auth::User()->id;
+                $order->save();
+                $this->show($order);
+            } else{
+                return $this->respondUnauthorized();
+            }
         } else{
             return $this->respondUnauthorized();
         }
