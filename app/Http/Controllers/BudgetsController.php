@@ -22,11 +22,22 @@ class BudgetsController extends Controller
 
         $budgets = Budget::find($budget->id)->accountsBudget;
 
+        $assigned = 0;
+        $balance = 0;
+
+        foreach ($budgets as $k => $bud) {
+            # code...
+            $assigned = $assigned + $bud->assigned;
+            $balance = $balance + $bud->balance;
+        }
+
         $budget = [
                     'department_id' =>  Budget::find($budget->id)->department->id,
                     'department'    =>  Budget::find($budget->id)->department->name,
                     'begins'         =>  $budget->begins,
                     'ends'          =>  $budget->ends,
+                    'totalAssigned' =>  $assigned,
+                    'totalBalance' =>  $balance,
                     'accounts'      =>  $budgets
         ];
 
