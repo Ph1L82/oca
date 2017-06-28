@@ -149,7 +149,7 @@ class OrdersController extends Controller
                 foreach ($order->items as $i => $item) {
                     # code...
                     $accountBudget[$i] = Account_Budget::find($item->account_budget_id);
-                    $accountBudget[$i]->balance = $accountBudget->balance - ($item->cost * $item->quantity);
+                    $accountBudget[$i]->balance = $accountBudget[$i]->balance - ($item->cost * $item->quantity);
                     $accountBudget[$i]->save();
                 }
                 $order->approved = Carbon::now();
