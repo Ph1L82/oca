@@ -176,12 +176,9 @@ class OrdersController extends Controller
                     'company' => $company->company_name
                 ];
 
-        if ($order->items_count > 0) {
-            # code...
             foreach ($order->items as $i => $item) {
                 $subTotal = $subTotal + ($item->cost * $item->quantity);
             }
-        }
 
         $result = [
                     'orderId' => $order->id,
