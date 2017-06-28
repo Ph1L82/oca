@@ -191,9 +191,9 @@ class OrdersController extends Controller
                     'iva'  =>  ($subTotal*env('IVA')),
                     'total'  =>  ($subTotal * (1+env('IVA'))),
                     'approved' => $order->approved,
-                    'approved_by' => User::find($order->approved_by)->name,
+                    'approved_by' => ($order->approved_by ? User::find($order->approved_by)->name : $order->approved_by),
                     'disapproved' => $order->disapproved,
-                    'disapproved_by' => User::find($order->disapproved_by)->name,
+                    'disapproved_by' => ($order->disapproved_by ? User::find($order->disapproved_by)->name : $order->disapproved_by),
                     'items' => $order->items,
                 ];
         return $result;
