@@ -85,26 +85,7 @@ class OrdersController extends Controller
      */
     public function show(Order $order)
     {
-        $department = Department::find($order->author()->first()->department)->first();
-        $company = Company::find($department->company_id)->first();
-
-        $author = [ 'name' => $order->author()->first()->name,
-                    'email' => $order->author()->first()->email,
-                    'department' => $department->name,
-                    'company' => $company->company_name
-                ];
-        $result = [
-                    'orderId' => $order->id,
-                    'author' => $author,
-                    'created_at' => date_format($order->created_at, 'Y-m-d H:i:s'),
-                    'provider' => $order->provider,
-                    'description' => $order->description,
-                    'approved_by' => $order->approved_by,
-                    'approved' => $order->approved,
-                    'disapproved' => $order->disapproved,
-                    'disapproved_by' => $order->disapproved_by,
-                    'items' => $order->items,
-                ];
+        $result = $this->orderDetails($order);
         return $this->respond($result);
     }
 
@@ -155,7 +136,8 @@ class OrdersController extends Controller
                 $order->approved = Carbon::now();
                 $order->approved_by = Auth::User()->id;
                 $order->save();
-                return $this->respond($accountBudget);
+                $result = $this->orderDetails($order);
+                return $this->respond($result);
             } else{
                 return $this->respondConflict();
             }
@@ -171,12 +153,38 @@ class OrdersController extends Controller
                 $order->disapproved = Carbon::now();
                 $order->disapproved_by = Auth::User()->id;
                 $order->save();
-                $this->show($order);
+                $result = $this->orderDetails($order);
+                return $this->respond($result);
             } else{
                 return $this->respondConflict();
             }
         } else{
             return $this->respondUnauthorized();
         }
+    }
+
+    public function orderDetails($order)
+    {
+        $department = Department::find($order->author()->first()->department)->first();
+        $company = Company::find($department->company_id)->first();
+
+        $author = [ 'name' => $order->author()->first()->name,
+                    'email' => $order->author()->first()->email,
+                    'department' => $department->name,
+                    'company' => $company->company_name
+                ];
+        $result = [
+                    'orderId' => $order->id,
+                    'author' => $author,
+                    'created_at' => date_format($order->created_at, 'Y-m-d H:i:s'),
+                    'provider' => $order->provider,
+                    'description' => $order->description,
+                    'approved_by' => $order->approved_by,
+                    'approved' => $order->approved,
+                    'disapproved' => $order->disapproved,
+                    'disapproved_by' => $order->disapproved_by,
+                    'items' => $order->items,
+                ];
+        return $result;
     }
 }
