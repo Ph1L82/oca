@@ -147,7 +147,7 @@ class OrdersController extends Controller
 
     public function approve(Order $order)
     {
-        if (Auth::User()->role == 'firmante') {
+        if ((Auth::User()->role == 'firmante') && ($order->approved == null)) {
             # code...
             foreach ($order->items as $item) {
                 # code...
