@@ -148,7 +148,6 @@ class OrdersController extends Controller
     {
         if (Auth::User()->role == 'firmante') {
             # code...
-            $order->items;
             foreach ($order->items as $item) {
                 # code...
                 $accountBudget = Account_Budget::find($item->account_budget_id);
