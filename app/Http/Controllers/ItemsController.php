@@ -3,6 +3,7 @@
 namespace oca\Http\Controllers;
 
 use oca\Item;
+use oca\Order;
 use Illuminate\Http\Request;
 use oca\Http\Controllers\ApiController;
 
@@ -43,14 +44,18 @@ class ItemsController extends Controller
      */
     public function store(Request $request)
     {
-        $item = new Item();
-        $item->name = $request->input('name');
-        $item->account_budget_id = $request->input('account_budget_id');
-        $item->order_id = $request->input('order_id');
-        $item->quantity = $request->input('quantity');
-        $item->cost = $request->input('cost');
-        $item->save();
-        return $this->respond($item);
+        if ($this->checkOrder($request->input('order_id'))) {
+            $item = new Item();
+            $item->name = $request->input('name');
+            $item->account_budget_id = $request->input('account_budget_id');
+            $item->order_id = $request->input('order_id');
+            $item->quantity = $request->input('quantity');
+            $item->cost = $request->input('cost');
+            $item->save();
+            return $this->respond($item);
+        } else{
+            return $this->respondBadRequest();
+        }
     }
 
     /**
@@ -100,5 +105,13 @@ class ItemsController extends Controller
     public function destroy(Item $item)
     {
         //
+    }
+
+    public function checkOrder($order_id)
+    {
+        $order = Order::find($order_id);
+        if ((is_null($order->approved)) && (is_null($order->disapproved))) {
+            return true;
+        }
     }
 }
