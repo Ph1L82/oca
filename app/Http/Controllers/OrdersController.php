@@ -9,6 +9,7 @@ use oca\Account_Budget;
 use Illuminate\Http\Request;
 use oca\Http\Controllers\ApiController;
 use Auth;
+use User;
 use Carbon\Carbon;
 
 class OrdersController extends Controller
@@ -189,10 +190,10 @@ class OrdersController extends Controller
                     'sub_total'  =>  $subTotal,
                     'iva'  =>  ($subTotal*env('IVA')),
                     'total'  =>  ($subTotal * (1+env('IVA'))),
-                    'approved_by' => $order->approved_by,
                     'approved' => $order->approved,
+                    'approved_by' => User::find($order->approved_by)->name,
                     'disapproved' => $order->disapproved,
-                    'disapproved_by' => $order->disapproved_by,
+                    'disapproved_by' => User::find($order->disapproved_by)->name,
                     'items' => $order->items,
                 ];
         return $result;
