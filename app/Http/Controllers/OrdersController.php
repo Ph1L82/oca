@@ -165,6 +165,8 @@ class OrdersController extends Controller
 
     public function orderDetails($order)
     {
+        $subTotal = 0;
+        
         $department = Department::find($order->author()->first()->department)->first();
         $company = Company::find($department->company_id)->first();
 
@@ -173,12 +175,23 @@ class OrdersController extends Controller
                     'department' => $department->name,
                     'company' => $company->company_name
                 ];
+
+        if ($order->items->count > 0) {
+            # code...
+            foreach ($order->items as $i => $item) {
+                $subTotal = $subTotal + ($item->cost * $item->quantity);
+            }
+        }
+
         $result = [
                     'orderId' => $order->id,
                     'author' => $author,
                     'created_at' => date_format($order->created_at, 'Y-m-d H:i:s'),
                     'provider' => $order->provider,
                     'description' => $order->description,
+                    'subTotal'  =>  $subTotal,
+                    'iva'  =>  ($subTotal*env('IVA')),
+                    'subTotal'  =>  ($subTotal * (1+env('IVA'))),
                     'approved_by' => $order->approved_by,
                     'approved' => $order->approved,
                     'disapproved' => $order->disapproved,
