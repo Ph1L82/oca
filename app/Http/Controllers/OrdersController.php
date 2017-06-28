@@ -9,7 +9,7 @@ use oca\Account_Budget;
 use Illuminate\Http\Request;
 use oca\Http\Controllers\ApiController;
 use Auth;
-use User;
+use oca\User;
 use Carbon\Carbon;
 
 class OrdersController extends Controller
