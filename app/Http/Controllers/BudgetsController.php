@@ -25,7 +25,7 @@ class BudgetsController extends Controller
         $budget = [
                     'department_id' =>  Budget::find($budget->id)->department->id,
                     'department'    =>  Budget::find($budget->id)->department->name,
-                    'begin'         =>  $budget->begins,
+                    'begins'         =>  $budget->begins,
                     'ends'          =>  $budget->ends,
                     'accounts'      =>  $budgets
         ];
