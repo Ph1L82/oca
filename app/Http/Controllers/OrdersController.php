@@ -153,8 +153,8 @@ class OrdersController extends Controller
                     # code...
                     $accountBudget = Account_Budget::find($item->account_budget_id);
                     $accountBudget->balance = $accountBudget->balance - ($item->cost * $item->quantity);
-                    $accountBudget->save();
                 }
+                $accountBudget->save();
                 $order->approved = Carbon::now();
                 $order->approved_by = Auth::User()->id;
                 $order->save();
