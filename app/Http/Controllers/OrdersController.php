@@ -27,9 +27,13 @@ class OrdersController extends Controller
                     ->where('disapproved', '=', null)
                     ->get();
 
+        $collection = collect();
+        
         foreach ($orders as $key => $order) {
-            $result[$key] = $this->orderDetails($order);
+            $collection->push($this->orderDetails($order));
         }
+
+        $result = $this->paginate($collection);
 
         if($orders->first()){
             return $this->respond($result);

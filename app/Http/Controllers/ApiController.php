@@ -136,4 +136,17 @@ trait ApiController {
             ]
         ]);
     }
+
+    public function paginate($items, $perPage)
+    {
+        $pageStart = \Request::get('page', 1);
+        $offSet = ($pageStart * $perPage) - $perPage;
+        $itemsForCurrentPAge = array_slice($items, $offSet, $perPage, TRUE);
+
+        return new Illuminate\Pagination\LenghtAwarePaginator(
+            $itemsForCurrentPAge, count($items), $perPage,
+            Illuminate\Pagination\Paginator::resolveCurrentPage(),
+            ['path' => Illuminate\Pagination\Paginator::resolveCurrentPath()]
+            );
+    }
 }
