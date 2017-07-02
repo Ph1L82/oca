@@ -28,12 +28,12 @@ class OrdersController extends Controller
                     ->get();
 
         $collection = collect();
-        
+
         foreach ($orders as $key => $order) {
             $collection->push($this->orderDetails($order));
         }
 
-        $result = $this->paginate($collection);
+        $result = $this->paginate($collection, env('PAGINATE_SIZE'));
 
         if($orders->first()){
             return $this->respond($result);
