@@ -28,7 +28,7 @@ class OrdersController extends Controller
                     ->get();
 
         foreach ($orders as $o => $order) {
-            $result[$o] = $this->orderDetails($order);
+            $result->push($this->orderDetails($order));
         }
                     
 
