@@ -137,7 +137,7 @@ trait ApiController {
         ]);
     }
 
-    public function paginate($items, $perPage = env('PAGINATE_SIZE'))
+    public function paginate($items, $perPage)
     {
         $pageStart = \Request::get('page', 1);
         $offSet = ($pageStart * $perPage) - $perPage;
