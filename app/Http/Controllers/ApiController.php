@@ -143,7 +143,7 @@ trait ApiController {
         $offSet = ($pageStart * $perPage) - $perPage;
         $itemsForCurrentPAge = array_slice($items, $offSet, $perPage, TRUE);
 
-        return new \Illuminate\Pagination\LenghtAwarePaginator(
+        return new \Illuminate\Pagination\LengthAwarePaginator(
             $itemsForCurrentPAge, count($items), $perPage,
             \Illuminate\Pagination\Paginator::resolveCurrentPage(),
             ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
