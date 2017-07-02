@@ -27,10 +27,11 @@ class OrdersController extends Controller
                     ->where('disapproved', '=', null)
                     ->get();
 
-        $collection = collect();
+        // $collection = collect();
 
         foreach ($orders as $key => $order) {
-            $collection->push($this->orderDetails($order));
+            $res[$key] = $this->orderDetails($order);
+            // $collection->push($this->orderDetails($order));
         }
 
         $result = $this->paginate($collection, env('PAGINATE_SIZE'));
