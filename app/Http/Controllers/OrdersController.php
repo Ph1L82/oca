@@ -26,14 +26,13 @@ class OrdersController extends Controller
         $orders = Order::where('approved', '=', null)
                     ->where('disapproved', '=', null)
                     ->get();
-        $result = collect();
-        foreach ($orders as $o => $order) {
-            $result->push($this->orderDetails($order));
+
+        foreach ($orders as $key => $order) {
+            $result[$key] = $this->orderDetails($order);
         }
-                    
 
         if($orders->first()){
-            return $this->respond($result->paginate(env('PAGINATE_SIZE')));
+            return $this->respond($result);
         } else{
             return $this->respondNotFound('Oops! no hay Ordenes de Compra');
         }
