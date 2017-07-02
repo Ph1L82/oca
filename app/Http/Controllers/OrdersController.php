@@ -30,11 +30,11 @@ class OrdersController extends Controller
         // $collection = collect();
 
         foreach ($orders as $key => $order) {
-            $res[$key] = $this->orderDetails($order);
+            $array[$key] = $this->orderDetails($order);
             // $collection->push($this->orderDetails($order));
         }
 
-        $result = $this->paginate($collection, env('PAGINATE_SIZE'));
+        $result = $this->paginate($array, env('PAGINATE_SIZE'));
 
         if($orders->first()){
             return $this->respond($result);
