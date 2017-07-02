@@ -26,7 +26,7 @@ class OrdersController extends Controller
         $orders = Order::where('approved', '=', null)
                     ->where('disapproved', '=', null)
                     ->get();
-
+        $result = collect();
         foreach ($orders as $o => $order) {
             $result->push($this->orderDetails($order));
         }
