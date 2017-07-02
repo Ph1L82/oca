@@ -18,7 +18,8 @@ class Order extends Model
     public function provider()
     {
     	# code...
-    	return $this->hasOne('oca\Provider', 'id');
+        // return $this->hasOne('oca\Provider', 'id');
+    	return $this->hasMany('oca\Provider', 'id');
     }
 
     public function author()
