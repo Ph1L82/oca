@@ -19,7 +19,7 @@ class Order extends Model
     {
     	# code...
         // return $this->hasOne('oca\Provider', 'id');
-    	return $this->hasMany('oca\Provider', 'id');
+    	return $this->hasMany('oca\Provider', 'id', 'provider_id');
     }
 
     public function author()
